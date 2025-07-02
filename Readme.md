@@ -18,6 +18,20 @@ In this study, we proposed a federated learning (FL) approach for prostate segme
 
 **Conclusion:** FL enhanced the performance and generalizability of MRI prostate segmentation and csPCa detection compared with local models and optimizing its configuration further improved the lesion detection score, from 0.72±0.06 to 0.74±0.06 (P≤0.01).
 
+#### Segmentation Performance:
+<p align="center">
+  <img src="Figs/Fig3.png" width="650" alt="Description">
+</p>
+
+#### Detection Performance:
+<p align="center">
+  <img src="Figs/Fig5.png" width="600" alt="Description">
+</p>
+
+#### Segmentation and Detection Performance:
+<p align="center">
+  <img src="Figs/Fig6.png" width="550" alt="Description">
+</p>
 
 ## Installation:
 Clone the entire repository to your local system, and then install the environment using the `.yml` file: `conda env create -f environment.yml`. Next, install the pipelines developed by the PI-CAI Grand Challenge organizers for data conversion (DICOM Archive → MHA Archive, MHA Archive → nnU-Net Raw Data Archive). Details for data conversion and evaluation for the Detection task, following the PI-CAI Grand Challenge guidelines, are provided in [`picai_prep`](https://github.com/DIAGNijmegen/picai_prep) and [`picai_eval`](https://github.com/DIAGNijmegen/picai_eval), respectively. For the segmentation task, the Dice score, relative volume difference, and HD95 distance are used as evaluation metrics. The modified version of the nnUNet codebase ([version 1.7.0](https://github.com/MIC-DKFZ/nnUNet/tree/nnunetv1)) and Flower must be also installed:
