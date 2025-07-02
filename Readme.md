@@ -34,7 +34,12 @@ In this study, we proposed a federated learning (FL) approach for prostate segme
 </p>
 
 ## Installation:
-Clone the entire repository to your local system, and then install the environment using the `.yml` file: `conda env create -f environment.yml`. Next, install the pipelines developed by the PI-CAI Grand Challenge organizers for data conversion (DICOM to MHA, MHA to nnU-Net Raw Data). Details for data conversion and evaluation for the Detection task, following the PI-CAI Grand Challenge guidelines, are provided in [`picai_prep`](https://github.com/DIAGNijmegen/picai_prep) and [`picai_eval`](https://github.com/DIAGNijmegen/picai_eval), respectively. For the segmentation task, the Dice score, relative volume difference, and HD95 distance are used as evaluation metrics. The modified version of the nnUNet codebase ([version 1.7.0](https://github.com/MIC-DKFZ/nnUNet/tree/nnunetv1)) and Flower must be also installed:
+Clone the entire repository to your local system, and then install the environment using the `.yml` file: 
+```bash
+git clone https://github.com/AshknMrd/moradi2025rai.git
+conda env create -f environment.yml
+```
+Next, install the pipelines developed by the PI-CAI Grand Challenge organizers for data conversion (DICOM to MHA, MHA to nnU-Net Raw Data). Details for data conversion and evaluation for the Detection task, following the PI-CAI Grand Challenge guidelines, are provided in [`picai_prep`](https://github.com/DIAGNijmegen/picai_prep) and [`picai_eval`](https://github.com/DIAGNijmegen/picai_eval), respectively. For the segmentation task, the Dice score, relative volume difference, and HD95 distance are used as evaluation metrics. The modified version of the nnUNet codebase ([version 1.7.0](https://github.com/MIC-DKFZ/nnUNet/tree/nnunetv1)) and Flower must be also installed:
 
 ```bash
 cd nnUNet  
