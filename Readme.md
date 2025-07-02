@@ -19,10 +19,8 @@ In this study, we proposed a federated learning (FL) approach for prostate segme
 **Conclusion:** FL enhanced the performance and generalizability of MRI prostate segmentation and csPCa detection compared with local models and optimizing its configuration further improved the lesion detection score, from 0.72±0.06 to 0.74±0.06 (P≤0.01).
 
 
-
-
 ## Installation:
-Clone the entire repository to your local system, and then install the environment using the `.yml` file: `conda env create -f environment.yml`. Next, install the pipelines developed by the PI-CAI Grand Challenge organizers for data conversion (DICOM Archive → MHA Archive, MHA Archive → nnU-Net Raw Data Archive). Details for data conversion and evaluation, following the PI-CAI Grand Challenge guidelines, are provided in [`picai_prep`](https://github.com/DIAGNijmegen/picai_prep) and [`picai_eval`](https://github.com/DIAGNijmegen/picai_eval), respectively. Then, the modified version of the nnUNet codebase ([version 1.7.0](https://github.com/MIC-DKFZ/nnUNet/tree/nnunetv1)) and Flower must be installed:
+Clone the entire repository to your local system, and then install the environment using the `.yml` file: `conda env create -f environment.yml`. Next, install the pipelines developed by the PI-CAI Grand Challenge organizers for data conversion (DICOM Archive → MHA Archive, MHA Archive → nnU-Net Raw Data Archive). Details for data conversion and evaluation for the Detection task, following the PI-CAI Grand Challenge guidelines, are provided in [`picai_prep`](https://github.com/DIAGNijmegen/picai_prep) and [`picai_eval`](https://github.com/DIAGNijmegen/picai_eval), respectively. For the segmentation task, the Dice score, relative volume difference, and HD95 distance are used as evaluation metrics. The modified version of the nnUNet codebase ([version 1.7.0](https://github.com/MIC-DKFZ/nnUNet/tree/nnunetv1)) and Flower must be also installed:
 
 ```bash
 cd nnUNet  
@@ -30,13 +28,30 @@ pip install -e .
 pip install flwr==1.3.0
 ```
 
+## Usage:
 
 
+## 📖 Citation
+The method was developed at the [CIMORe](https://www.ntnu.edu/isb/mr-cancer) - Cancer Imaging and Multi-Omics Research Group at the Norwegian University of Science and Technology (NTNU) in Trondheim, Norway. For detailed information about this method, please read our [SPIE medical imaging conference paper](https://www.spiedigitallibrary.org/conference-proceedings-of-spie/12927/129271Q/Federated-learning-for-prostate-cancer-detection-in-biparametric-MRI/10.1117/12.2688568.full) or the [Radiology Artificial Intelligence manuscript](https://www.to_be_add.com). If you use this work, please cite:
+
+```bibtex
+@inproceedings{moradi2024federated,
+  title={Federated learning for prostate cancer detection in biparametric MRI: optimization of rounds, epochs, and aggregation strategy},
+  author={Moradi, Ashkan and Zerka, Fadila and Bosma, Joeran Sander and Yakar, Derya and Geerdink, Jeroen and Huisman, Henkjan and Bathen, Tone Frost and Elschot, Mattijs},
+  booktitle={SPIE Medical Imaging 2024: Computer-Aided Diagnosis},
+  volume={12927},
+  pages={412--421},
+  year={2024}}
+```
+and
+```bibtex
+...
+``` 
 
 
+## Acknowledgements
+We acknowledge the authors of the publicly available datasets used in this study, whose contributions have enabled valuable research. Additionally, we extend our gratitude to the developers of [Flower](https://flower.ai/), [nnU-Net](https://github.com/MIC-DKFZ/nnUNet), and the [PI-CAI](https://pi-cai.grand-challenge.org/) Grand Challenge for making their important contributions publicly accessible.
 
-
-The method was developed at the [CIMORe](https://www.ntnu.edu/isb/mr-cancer) - Cancer Imaging and Multi-Omics Research Group at the Norwegian University of Science and Technology (NTNU) in Trondheim, Norway. For detailed information about this method, please read our [SPIE medical imaging conference paper](https://www.spiedigitallibrary.org/conference-proceedings-of-spie/12927/129271Q/Federated-learning-for-prostate-cancer-detection-in-biparametric-MRI/10.1117/12.2688568.full) or the [Radiology Artificial Intelligence manuscript](https://www.to_be_add.com). 
 
 
 Complete details about the implementation and the required software and packages will be made publicly available upon publication of the manuscript (stay tuned...)
