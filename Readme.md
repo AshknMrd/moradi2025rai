@@ -48,54 +48,104 @@ pip install flwr==1.3.0
 ```
 
 ## Usage:
-
-### csPCa Detection Task:
-Replace the aggregation strategy to try out diffrent aggregations:
+To reuse this repository, you must first create a working directory that includes the nnUNet folders, referred to as `workdir_dir`. Then, for each task, you can use the provided wrapper to run the nnUNet commands and the Flower-based script for the client and server. For FL configuration optimization, the number of federated rounds and local nnUNet training epochs can be set as desired and different server aggregation strategies can also be substituted in the server script using the following examples for setting the parameters.
 
 ```Python
-strategy = FedAdagrad(
-  fraction_fit=1.0,
-  min_fit_clients=args.min_fit_clients,
-  min_available_clients=args.min_aval_clients,
-  initial_parameters=get_parameters(),
-  eta=1e-1,
-  eta_l=1e-1,
-  tau=1e-9)
+strategy = FedAvg(fraction_fit=1.0,
+              min_fit_clients=args.min_fit_clients,
+              min_available_clients=args.min_aval_clients,
+              initial_parameters=get_parameters(),)
 
-strategy = FedAdam(
-  fraction_fit=1.0,
-  min_fit_clients=args.min_fit_clients,
-  min_available_clients=args.min_aval_clients,
-  initial_parameters=get_parameters(),
-  eta=1e-1,
-  eta_l=1e-1,
-  beta_1=0.9,
-  beta_2=0.99,
-  tau=1e-9)
+strategy = FedAdagrad(fraction_fit=1.0,
+              min_fit_clients=args.min_fit_clients,
+              min_available_clients=args.min_aval_clients,
+              initial_parameters=get_parameters(),
+              eta=1e-1,eta_l=1e-1,tau=1e-9)
 
-strategy = FedMedian(
-  fraction_fit=1.0,
-  min_fit_clients=args.min_fit_clients,
-  min_available_clients=args.min_aval_clients,
-  initial_parameters=get_parameters())
+strategy = FedAdam(fraction_fit=1.0,
+              min_fit_clients=args.min_fit_clients,
+              min_available_clients=args.min_aval_clients,
+              initial_parameters=get_parameters(),
+              eta=1e-1,eta_l=1e-1,beta_1=0.9,
+              beta_2=0.99,tau=1e-9)
 
-strategy = FedTrimmedAvg(
-  fraction_fit=1.0,
-  min_fit_clients=args.min_fit_clients,
-  min_available_clients=args.min_aval_clients,
-  initial_parameters=get_parameters(),
-  beta=0.2)
+strategy = FedMedian(fraction_fit=1.0,
+              min_fit_clients=args.min_fit_clients,
+              min_available_clients=args.min_aval_clients,
+              initial_parameters=get_parameters())
 
-strategy = FedYogi(
-  fraction_fit=1.0,
-  min_fit_clients=args.min_fit_clients,
-  min_available_clients=args.min_aval_clients,
-  initial_parameters=get_parameters(),
-  eta=1e-2,
-  eta_l=0.0316,
-  beta_1=0.9,
-  beta_2=0.99,
-  tau=1e-3)
+strategy = FedYogi(fraction_fit=1.0,
+              min_fit_clients=args.min_fit_clients,
+              min_available_clients=args.min_aval_clients,
+              initial_parameters=get_parameters(),
+              eta=1e-2,eta_l=0.0316,beta_1=0.9,
+              beta_2=0.99,tau=1e-3)
+```
+
+### Prostate Gland Segmentation Task: 
+On one client side, run the local model for one epoch using the model plan and architecture determined by nnUNet. Of course, this requires the data to be preprocessed as detailed in the manuscript.
+
+```Python
+python train_pre_process_wrapper.py plan_train 
+        --trainer 'nnUNetTrainerV2_Loss_Dice_FL' 
+        --custom_split './workdir/nnUNet_raw_data/Task1001_segmentation_FL/splits.json' 
+        --fold 0 
+        'Task1001_segmentation_FL' './workdir'
+```
+Then after distributing the initial model and plan to all client sites, both the local and centralized models can be run as
+
+ ```Python
+python train_pre_process_wrapper.py plan_train 
+        --trainer 'nnUNetTrainerV2_Loss_Dice_FL' 
+        --custom_split './workdir/nnUNet_raw_data/Task1001_segmentation_FL/splits.json' 
+        --overwrite_plans './initial_plan.pkl' 
+        --overwrite_plans_identifier 'nnUNetData_plans_v2.1' 
+        --pretrained_weights './initial_model.model' 
+        --fold 0 
+        'Task1001_segmentation_FL' './workdir'
+
+ ```
+and run the federated experiments by executing  `./server_run.sh` on the server side and `./client_run.sh` on each of the client sides.
+
+
+### csPCa Detection Task:
+Similarly, for the detection task, on one client side, run the local model for one epoch using the model plan and architecture determined by nnUNet (the data to be preprocessed as detailed in the manuscript).
+```Python
+python train_pre_process_wrapper.py plan_train 
+        --trainer 'nnUNetTrainerV2_Loss_CE_FL' 
+        --custom_split './workdir/nnUNet_raw_data/Task1001_detection_FL/splits.json' 
+        --fold 0 
+        'Task1001_detection_FL' './workdir'
+```
+and after distributing the initial model and plan to all client sites, both the local and centralized models can be run as
+
+ ```Python
+python train_pre_process_wrapper.py plan_train 
+        --trainer 'nnUNetTrainerV2_Loss_CE_FL' 
+        --custom_split './workdir/nnUNet_raw_data/Task1001_detection_FL/splits.json' 
+        --overwrite_plans './initial_plan.pkl' 
+        --overwrite_plans_identifier 'nnUNetData_plans_v2.1' 
+        --pretrained_weights './initial_model.model' 
+        --fold 0 
+        'Task1001_detection_FL' './workdir'
+
+ ```
+and run the federated experiments by executing  `./server_run.sh` on the server side and `./client_run.sh` on each of the client sides.
+
+### Evaluation: 
+For each task, predictions can also be generated using the provided wrapper script as follows, and the evaluation metrics for the detection task can be computed using [`picai_eval`](https://github.com/DIAGNijmegen/picai_eval). Please note that prediction and evaluation can be done directly using nnUNet also.
+
+```Python
+python train_pre_process_wrapper.py predict 
+          --trainer 'trainer_name'
+          --folds 0 
+          --checkpoint 'model_final_checkpoint' 
+          --results './workdir/results' 
+          --input './testset_dir/imagesTs' 
+          --output './perdiction_output' 
+          --plans_identifier 'nnUNetPlans_pretrained_nnUNetData_plans_v2.1' 
+          --store_probability_maps 
+          'task_name'
 ```
 
 ## 📖 Citation
@@ -117,9 +167,4 @@ and
 
 
 ## Acknowledgements
-We acknowledge the authors of the publicly available datasets used in this study, whose contributions have enabled valuable research. Additionally, we extend our gratitude to the developers of [Flower](https://flower.ai/), [nnU-Net](https://github.com/MIC-DKFZ/nnUNet), and the [PI-CAI](https://pi-cai.grand-challenge.org/) Grand Challenge for making their important contributions publicly accessible.
-
-
-
-Complete details about the implementation and the required software and packages will be made publicly available upon publication of the manuscript (stay tuned...)
-
+We acknowledge the authors of the publicly available datasets used in this study, whose contributions have enabled valuable research. Additionally, we extend our gratitude to the developers of [Flower](https://flower.ai/), [nnU-Net](https://github.com/MIC-DKFZ/nnUNet), and the [PI-CAI](https://pi-cai.grand-challenge.org/) Grand Challenge for making their important contributions publicly accessible (a big thank you to the developers of [`picai_prep`](https://github.com/DIAGNijmegen/picai_prep), [`picai_baseline`](https://github.com/DIAGNijmegen/picai_baseline), and [`picai_eval`](https://github.com/DIAGNijmegen/picai_eval) as these repositories greatly helped us in providing this codebase).
