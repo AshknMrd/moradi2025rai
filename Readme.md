@@ -28,11 +28,6 @@ In this study, we proposed a federated learning (FL) approach for prostate segme
   <img src="Figs/Fig5.png" width="600" alt="Description">
 </p>
 
-#### Segmentation and Detection Performance:
-<p align="center">
-  <img src="Figs/Fig6.png" width="550" alt="Description">
-</p>
-
 ## Installation:
 Clone the entire repository to your local system, and then install the environment using the `.yml` file: 
 ```bash
