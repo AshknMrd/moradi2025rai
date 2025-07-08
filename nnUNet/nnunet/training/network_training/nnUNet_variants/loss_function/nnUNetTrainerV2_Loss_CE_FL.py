@@ -12,10 +12,10 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 from nnunet.training.loss_functions.crossentropy import RobustCrossEntropyLoss
-from nnunet.training.network_training.nnUNetTrainerV2_mine import nnUNetTrainerV2_mine
+from nnUNet.nnunet.training.network_training.nnUNetTrainer_FL import nnUNetTrainer_FL
 
 
-class nnUNetTrainerV2_Loss_CE_mine(nnUNetTrainerV2_mine):
+class nnUNetTrainerV2_Loss_CE_FL(nnUNetTrainer_FL):
     def __init__(self, plans_file, fold, output_folder=None, dataset_directory=None, batch_dice=True, stage=None,
                  unpack_data=True, deterministic=True, fp16=False):
         super().__init__(plans_file, fold, output_folder, dataset_directory, batch_dice, stage, unpack_data,

@@ -49,10 +49,62 @@ pip install flwr==1.3.0
 
 ## Usage:
 
+### csPCa Detection Task:
+Replace the aggregation strategy to try out diffrent aggregations:
+
+```Python
+strategy = FedAdagrad(
+  fraction_fit=1.0,
+  min_fit_clients=args.min_fit_clients,
+  min_available_clients=args.min_aval_clients,
+  initial_parameters=get_parameters(),
+  eta=1e-1,
+  eta_l=1e-1,
+  tau=1e-9)
+
+strategy = FedAdam(
+  fraction_fit=1.0,
+  min_fit_clients=args.min_fit_clients,
+  min_available_clients=args.min_aval_clients,
+  initial_parameters=get_parameters(),
+  eta=1e-1,
+  eta_l=1e-1,
+  beta_1=0.9,
+  beta_2=0.99,
+  tau=1e-9)
+
+strategy = FedMedian(
+  fraction_fit=1.0,
+  min_fit_clients=args.min_fit_clients,
+  min_available_clients=args.min_aval_clients,
+  initial_parameters=get_parameters())
+
+strategy = FedTrimmedAvg(
+  fraction_fit=1.0,
+  min_fit_clients=args.min_fit_clients,
+  min_available_clients=args.min_aval_clients,
+  initial_parameters=get_parameters(),
+  beta=0.2)
+
+strategy = FedYogi(
+  fraction_fit=1.0,
+  min_fit_clients=args.min_fit_clients,
+  min_available_clients=args.min_aval_clients,
+  initial_parameters=get_parameters(),
+  eta=1e-2,
+  eta_l=0.0316,
+  beta_1=0.9,
+  beta_2=0.99,
+  tau=1e-3)
+```
 
 ## 📖 Citation
 The method was developed at the [CIMORe](https://www.ntnu.edu/isb/mr-cancer) - Cancer Imaging and Multi-Omics Research Group at the Norwegian University of Science and Technology (NTNU) in Trondheim, Norway. For detailed information about this method, please read our [SPIE medical imaging conference paper](https://www.spiedigitallibrary.org/conference-proceedings-of-spie/12927/129271Q/Federated-learning-for-prostate-cancer-detection-in-biparametric-MRI/10.1117/12.2688568.full) or the [Radiology Artificial Intelligence manuscript](https://www.to_be_add.com). If you use this work, please cite:
 
+```bibtex
+...
+```
+and
 ```bibtex
 @inproceedings{moradi2024federated,
   title={Federated learning for prostate cancer detection in biparametric MRI: optimization of rounds, epochs, and aggregation strategy},
@@ -61,10 +113,6 @@ The method was developed at the [CIMORe](https://www.ntnu.edu/isb/mr-cancer) - C
   volume={12927},
   pages={412--421},
   year={2024}}
-```
-and
-```bibtex
-...
 ``` 
 
 
