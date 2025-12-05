@@ -43,6 +43,19 @@ pip install flwr==1.3.0
 ```
 
 ## Usage:
+Before starting the experiments, make sure that your dataset is downloaded and organized in the following format.
+
+```
+workdir/  
+├── nnUNet_raw/  
+│   └── Dataset101_name/  
+│       ├── imagesTr/  
+│       ├── labelsTr/  
+│       └── dataset.json
+├── nnUNet_preprocessed/  
+└── nnUNet_results/  
+```
+
 To reuse this repository, you must first create a working directory that includes the nnUNet folders, referred to as `workdir_dir`. Then, for each task, you can use the provided wrapper to run the nnUNet commands and the Flower-based script for the client and server. For FL configuration optimization, the number of federated rounds and local nnUNet training epochs can be set as desired and different server aggregation strategies can also be substituted in the server script using the following examples for setting the parameters.
 
 ```Python
